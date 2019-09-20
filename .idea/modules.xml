@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/country.iml" filepath="$PROJECT_DIR$/.idea/country.iml" />
       <module fileurl="file://$PROJECT_DIR$/country-general/country-general.iml" filepath="$PROJECT_DIR$/country-general/country-general.iml" />
       <module fileurl="file://$PROJECT_DIR$/country-id/country-id.iml" filepath="$PROJECT_DIR$/country-id/country-id.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/country-repository.iml" filepath="$PROJECT_DIR$/.idea/country-repository.iml" />
     </modules>
   </component>
 </project>

@@ -2,6 +2,7 @@ package com.MyCommon;
 
 // Maybe I can move Country class / project to infrastructure-geography
 public class Country {
+
     private String name;
     //private InternationalPrefix internationalPrefix; // 972
 
