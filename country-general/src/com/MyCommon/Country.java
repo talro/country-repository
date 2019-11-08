@@ -17,6 +17,7 @@ public class Country extends RelationalDatabaseObject {
     public final String MY_CLASS_NAME = this.getClass().getSimpleName(); // "Country"
 
     // Attributes
+    private CountryId id;
     private String name = "";
     private InternationalPrefix internationalPrefix; // 972
 
@@ -59,6 +60,12 @@ public class Country extends RelationalDatabaseObject {
     }
 
     // Setters & Getters
+    public CountryId getId() {
+        return id;
+    }
+    public void setId(CountryId countryId) {
+        this.id = countryId;
+    }
     public String getName() {
         return this.name;
     }
@@ -73,7 +80,7 @@ public class Country extends RelationalDatabaseObject {
     }
     public void setInternationalPrefix(String internationalPrefixString) {
         this.internationalPrefix.setValue(internationalPrefixString);
-    }
+    } // setInternationalPrefix
 
     @Override
     public String toString() {
@@ -94,7 +101,7 @@ public class Country extends RelationalDatabaseObject {
         attributesNamesMap.put(AttributesNames.NAME, "name");
         attributesNamesMap.put(AttributesNames.INTERNATIONAL_PREFIX, "international_prefix");
         MethodHandler.MethodEnd();
-    }
+    } // setAttributesNames
 
     public void setAttributes(ResultSet rs, ResultSet[] resultSets) {
         MethodHandler.MethodStart();
@@ -106,7 +113,7 @@ public class Country extends RelationalDatabaseObject {
             ExceptionHandler.exceptionHandler(ex, slaveLogRecord, "Problem in public void setAttributes(ResultSet rs)" );
         }
         MethodHandler.MethodEnd();
-    }
+    } // setAttributes
 
     public static void setDatabaseFields() {
         MethodHandler.MethodStart();
@@ -115,7 +122,7 @@ public class Country extends RelationalDatabaseObject {
         RelationalDatabaseObject.databaseFields.add("name", new DatabaseFieldInfo("String"));
         RelationalDatabaseObject.databaseFields.add("international_prefix", new DatabaseFieldInfo("String"));
         MethodHandler.MethodEnd();
-    }
+    } // setDatabaseFields
 
     // TODO Can we use Map or other container here?
     public String[] getObjectValuesArray() {
@@ -126,7 +133,7 @@ public class Country extends RelationalDatabaseObject {
         updateValues[1]=""+this.getInternationalPrefix();
         MethodHandler.MethodEnd(updateValues.toString());
         return updateValues;
-    }
+    } // getObjectValuesArray
 
     // TODO Can we move it to RelationalDatabaseObject?
     public String getObjectValuesString() {
@@ -134,7 +141,7 @@ public class Country extends RelationalDatabaseObject {
         String result = "'"+this.getName()+"','"+this.getInternationalPrefix()+"'";
         MethodHandler.MethodEnd(result);
         return result;
-    }
+    } // getObjectValuesString
 
     public void setPreparedStatement(PreparedStatement statement) {
         MethodHandler.MethodStart();
@@ -146,7 +153,7 @@ public class Country extends RelationalDatabaseObject {
             ExceptionHandler.exceptionHandler(ex, slaveLogRecord, "Problem in public void "+MY_CLASS_NAME+".setPreparedStatement(PreparedStatement statement)" );
         }
         MethodHandler.MethodEnd();
-    }
+    } // setPreparedStatement
 
     // TODO Can we move this to RelationalDatabaseObject?
     public String setSqlStatement() {
@@ -157,5 +164,5 @@ public class Country extends RelationalDatabaseObject {
                 ;
         MethodHandler.MethodEnd(sqlStatement);
         return sqlStatement;
-    }
+    } // setSqlStatement
 }

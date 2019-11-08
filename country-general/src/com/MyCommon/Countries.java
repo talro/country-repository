@@ -1,14 +1,5 @@
 package com.MyCommon;
 
-import com.MyCommon.MemoryFullException;
-import com.MyCommon.MyContainer;
-import com.MyGroups.MyLogger;
-import com.MyCommon.NotFoundInMemoryException;
-import com.MyCommon.CountryId;
-import com.MyCommon.Country;
-
-import java.sql.PreparedStatement;
-
 // Simple example of Database Usage
 // Project Dependencies code-handler
 public class Countries extends MyContainer<Country, NotFoundInMemoryException, MemoryFullException> {
@@ -19,7 +10,7 @@ public class Countries extends MyContainer<Country, NotFoundInMemoryException, M
     public static int MAX_COUNTRIES = 100;
 
     // Attributes
-    private Country[] countries = new Country[MAX_COUNTRIES];
+    private Country[] values = new Country[MAX_COUNTRIES];
     private int nextAvailableIndex = 0;
 
     // Exceptions
@@ -32,42 +23,62 @@ public class Countries extends MyContainer<Country, NotFoundInMemoryException, M
     }
 
     // Constructors
-    public Countries() {
-        super(itemFullClassName/*, itemClassName*/);
 
-    }
+    // Default Constructor
+    public Countries() {
+        super(itemFullClassName); // Calling to the parent constuctor
+        MethodHandler.MethodStart();
+        MethodHandler.MethodEnd();
+    } // Countries
 
     public Countries( Country country) throws FullException {
-        super(itemFullClassName/*, itemClassName*/);
+        this(); // Calling to the Default Constructor
+        MethodHandler.MethodStart();
         this.add( country );
         if (false)
             throw new FullException();
-    }
+        MethodHandler.MethodEnd();
+    } // Countries
 
     // Methods
     public void add( Country country ) throws FullException {
         MethodHandler.MethodStart();
-        countries[nextAvailableIndex] = country;
-        nextAvailableIndex++;
-        if (false)
+        if (this.nextAvailableIndex>=MAX_COUNTRIES)
             throw new FullException();
+        values[nextAvailableIndex] = country;
+        nextAvailableIndex++;
         MethodHandler.MethodEnd();
-    }
+    } // add
 
-    public void remove( CountryId countryId ) throws CountryDoNotExistsException {
+    // Used both by find() and by remove()
+    private int findIndex(CountryId countryId) throws CountryDoNotExistsException {
         MethodHandler.MethodStart();
-        if (false)
+        boolean found = false;
+        int indexOfTheItem;
+        for (indexOfTheItem=0; indexOfTheItem< this.nextAvailableIndex && !found; indexOfTheItem++) {
+            if (this.values[indexOfTheItem].getLocalId()==countryId.getValue()) {
+                found = true;
+            }
+        }
+        if (!found)
             throw new CountryDoNotExistsException();
-        MethodHandler.MethodEnd();
-    }
+        MethodHandler.MethodEnd(indexOfTheItem);
+        return indexOfTheItem;
+    } // findIndex
+
+    public Country find(CountryId countryId) throws CountryDoNotExistsException {
+        MethodHandler.MethodStart();
+        Country country = this.values[findIndex(countryId)];
+        MethodHandler.MethodEnd(country.toString());
+        return country;
+    } // find
 
     public Country of(CountryId countryId ) throws CountryDoNotExistsException {
         MethodHandler.MethodStart();
-        if (false)
-            throw new CountryDoNotExistsException();
-        MethodHandler.MethodEnd(countries[0].toString());
-        return countries[0];
-    }
+        Country country = find(countryId);
+        MethodHandler.MethodEnd(country.toString());
+        return country;
+    } // of
 
     public static Countries getAllCounties() {
         MethodHandler.MethodStart();
@@ -81,5 +92,35 @@ public class Countries extends MyContainer<Country, NotFoundInMemoryException, M
         }
         MethodHandler.MethodEnd(countries.toString());
         return countries;
-    }
+    } // getAllCountries
+
+    public void update( Country country )  {
+        MethodHandler.MethodStart();
+        int index = 0;
+        try {
+            index = findIndex(country.getId());
+        } catch (CountryDoNotExistsException e) {
+            e.printStackTrace();
+        }
+        this.values[index] = country;
+        MethodHandler.MethodEnd();
+    } // update
+
+    private void moveAllItemsBackward(int indexOfTheItemFound) {
+        MethodHandler.MethodStart();
+        for (int i=indexOfTheItemFound; i<nextAvailableIndex; i++) {
+            this.values[i]=this.values[i+1];
+        }
+        nextAvailableIndex--;
+        values[nextAvailableIndex] = null;
+        MethodHandler.MethodEnd();
+    } // moveAllItemsBackward
+
+    public void remove( CountryId countryId ) throws CountryDoNotExistsException {
+        MethodHandler.MethodStart();
+        int indexOfTheItemFound = findIndex( countryId );
+        moveAllItemsBackward(indexOfTheItemFound);
+        MethodHandler.MethodEnd();
+    } // remove
+
 }
